@@ -8,7 +8,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { cn } from '@/lib/utils'
-import { OrderStatus } from '@prisma/client'
+import { OrderStatus } from '../../../prisma/generated/client'
 import { useMutation } from '@tanstack/react-query'
 import { Check, ChevronsUpDown } from 'lucide-react'
 import { changeOrderStatus } from './actions'

@@ -21,6 +21,7 @@ export const createCheckoutSession = async ({
 
   const { getUser } = getKindeServerSession()
   const user = await getUser()
+  console.log(user)
 
   if (!user) {
     throw new Error('You need to be logged in')
@@ -70,7 +71,7 @@ export const createCheckoutSession = async ({
     cancel_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/configure/preview?id=${configuration.id}`,
     payment_method_types: ['card', 'paypal'],
     mode: 'payment',
-    shipping_address_collection: { allowed_countries: ['DE', 'US'] },
+    shipping_address_collection: { allowed_countries: ['UZ', 'US'] },
     metadata: {
       userId: user.id,
       orderId: order.id,
