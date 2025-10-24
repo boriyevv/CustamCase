@@ -1,0 +1,55 @@
+' iPhone 17 seriyalari bo‘yicha 10 slayddan iborat prezentatsiya + rasm joylashtirish
+' Fayllar joyi: Ish stoli > iphone17_rasmlar (1.jpg, 2.jpg ... 10.jpg)
+
+On Error Resume Next
+
+Dim ppApp, pres
+Set ppApp = CreateObject("PowerPoint.Application")
+If Err.Number <> 0 Then
+    MsgBox "PowerPoint topilmadi yoki ishga tushmadi.", vbCritical, "Xato"
+    WScript.Quit
+End If
+On Error GoTo 0
+
+ppApp.Visible = True
+Set pres = ppApp.Presentations.Add
+
+Const ppLayoutTitleAndText = 2
+Const ppSaveAsOpenXMLPresentation = 24
+
+Function AddSlideWithImage(titleText, bulletsText, imgPath)
+    Dim sld, pic
+    Set sld = pres.Slides.Add(pres.Slides.Count + 1, ppLayoutTitleAndText)
+    sld.Shapes(1).TextFrame.TextRange.Text = titleText
+    sld.Shapes(2).TextFrame.TextRange.Text = bulletsText
+    sld.Shapes(2).TextFrame.TextRange.ParagraphFormat.Bullet.Visible = True
+    
+    If imgPath <> "" Then
+        Set pic = sld.Shapes.AddPicture(imgPath, False, True, 350, 100, 300, 300)
+    End If
+End Function
+
+' Ish stoli yo‘lini olish
+Dim WshShell, desktopPath, imgFolder
+Set WshShell = CreateObject("WScript.Shell")
+desktopPath = WshShell.SpecialFolders("Desktop")
+imgFolder = "C:\Users\L.E.G.E.N.D.A\Desktop\iphone17_rasmlar"
+
+' Slaydlarni qo‘shish
+AddSlideWithImage "Umumiy ko‘rinish", "Barcha modellarning umumiy ko‘rinishi", imgFolder & "1.jpg"
+AddSlideWithImage "Model turlari", "17, 17 Plus, 17 Pro, 17 Pro Max, Ultra", imgFolder & "2.jpg"
+AddSlideWithImage "Dizayn va materiallar", "Yangi ranglar, korpus, himoya", imgFolder & "3.jpg"
+AddSlideWithImage "Displey", "Dynamic Island, Always-On, HDR", imgFolder & "4.jpg"
+AddSlideWithImage "Chip va ishlash", "Yangi chip avlodi, samaradorlik", imgFolder & "5.jpg"
+AddSlideWithImage "Kamera tizimi", "Asosiy va telefoto linzalar", imgFolder & "6.jpg"
+AddSlideWithImage "Batareya va zaryadlash", "USB-C, MagSafe, tez zaryad", imgFolder & "7.jpg"
+AddSlideWithImage "Aloqa texnologiyalari", "5G, Wi-Fi 7, sun’iy yo‘ldosh", imgFolder & "8.jpg"
+AddSlideWithImage "Dasturiy ta’minot", "iOS 19, AI funksiyalari", imgFolder & "9.jpg"
+AddSlideWithImage "Narxlar va xulosa", "Narxlar, xotira opsiyalari", imgFolder & "10.jpg"
+
+' Saqlash
+Dim savePath
+savePath = desktopPath & "\iPhone17_prezentatsiya_rasmlar_bilan.pptx"
+pres.SaveAs savePath, ppSaveAsOpenXMLPresentation
+
+MsgBox "Prezentatsiya tayyor! Fayl ish stolida saqlandi." & vbCrLf & savePath, vbInformation, "Bajarildi"
